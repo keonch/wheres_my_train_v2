@@ -5,8 +5,8 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.get('/api/fetch_gtfs_feed', (req, res) => {
-
-    res.json(['hey world', 'hello wrld']);
+    const a = process.env.mta_datamine;
+    res.json(['hey world', 'hello wrld', a]);
 
 });
 
