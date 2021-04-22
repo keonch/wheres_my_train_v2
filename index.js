@@ -6,7 +6,7 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.get('/api/fetch_gtfs_feed', (req, res) => {
 
-    res.send("hello world");
+    res.json(['hey world', 'hello wrld']);
 
 });
 
