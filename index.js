@@ -2,28 +2,38 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const https = require('https');
+const GtfsRealtimeBindings = require('gtfs-realtime-bindings');
 
 app.use(express.static(path.join(__dirname, 'client/build')));
 
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
 app.get('/api/fetch_gtfs_feed', (req, res) => {
-    const response = https.get(
+    https.get(
         "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-ace",
         {
             headers: { "x-api-key": process.env.mta_datamine }
         },
-        (resp) => {
-            resp.on('data', (chunk) => {
+        (datamineResponse) => {
+            const response = {
+                datamineResCode: null,
+                body: []
+            }
+            datamineResponse.on('data', (chunk) => {
                 console.log("Receiving Data");
+                response.body.push(chunk);
             });
-            resp.on('end', () => {
+            datamineResponse.on('end', () => {
                 console.log("Finished receiving data");
+                response.datamineResCode = datamineResponse.statusCode;
+                res.send(response);
             });
         }).on("error", (err) => {
             console.log("Error: " + err.message);
         });
-    res.send(response);
 });
-
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname + '/client/build/index.html'));

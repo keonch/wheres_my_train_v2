@@ -1,34 +1,32 @@
 import React, { Component } from 'react';
-import './App.css';
+import '../assets/stylesheets/App.css';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      data: ""
-    };
+    this.state = {};
 
-    this.get_feed = this.get_feed.bind(this);
+    this.getFeed = this.getFeed.bind(this);
   }
 
   componentDidMount() {
-    this.get_feed();
+    this.getFeed();
   }
 
-  get_feed = () => {
+  getFeed = () => {
     fetch('/api/fetch_gtfs_feed')
       .then(res => {
-        console.log(res);
-        return res.json()
+        console.log(res.json());
       })
-      .then(data => this.setState({ data }));
+      .then(data => {
+        console.log(data);
+      });
   }
 
   render() {
     return (
-      <div className="App">
+      <div className="App" >
         HELLO WORLD
-        {this.state.data}
       </div>
     );
   }
