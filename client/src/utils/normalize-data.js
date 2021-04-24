@@ -6,9 +6,13 @@ export const normalizeTrainData = (payload) => {
     // runtime epoch timestamp
     const now = Date.now() / 1000 | 0;
 
-    // select tripUpdate elements (even indicies) from payload
-    for (let i = 0; i < payload.length; i += 2) {
-        const tripUpdate = payload[i].tripUpdate;
+    // select trains with tripUpdate elements within payload
+    payload.forEach((entity, i) => {
+        if (!entity.tripUpdate) {
+            return;
+        }
+
+        const tripUpdate = entity.tripUpdate;
 
         // select trains with valid stopTimeUpdate available
         if ("stopTimeUpdate" in tripUpdate && isBeforeDestination(tripUpdate.stopTimeUpdate, now)) {
@@ -22,7 +26,7 @@ export const normalizeTrainData = (payload) => {
             setNextStops(train, tripUpdate.stopTimeUpdate, now)
             addTrainToResult(result, train);
         }
-    }
+    });
 
     return result;
 };

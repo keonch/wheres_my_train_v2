@@ -8,7 +8,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchTrains('ABC');
+    this.props.fetchTrains('7');
   }
 
   render() {

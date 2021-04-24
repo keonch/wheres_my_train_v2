@@ -24,7 +24,8 @@ export const findNextStopIndex_BSearch = (arr, target) => {
 export const findNextStopIndex_Linear = (arr, target) => {
     let i = 0;
     while (i < arr.length) {
-        const time = parseInt(arr[i].arrival.time, 10);
+        const timeString = (arr[i].arrival && arr[i].arrival.time) || (arr[i].departure && arr[i].departure.time);
+        const time = parseInt(timeString, 10);
         if (target < time) {
             return i;
         }
