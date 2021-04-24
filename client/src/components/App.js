@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
 import '../assets/stylesheets/App.css';
+import Map from './Map';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+	constructor(props) {
+		super(props);
+		this.state = {};
+	}
 
-  componentDidMount() {
-    this.props.fetchTrains('7');
-  }
+	componentDidMount() {
+	}
 
-  render() {
-    return (
-      <div className="App" >
-        HELLO WORLD
-      </div>
-    );
-  }
+	render() {
+		return (
+			<div className="App" >
+				<Map></Map>
+			</div>
+		);
+	}
 }
 
 export default App;
