@@ -1,4 +1,4 @@
-import GtfsRealtimeBindings from 'gtfs-realtime-bindings';
+import { normalizeTrainData } from '../utils/normalize-data';
 export const RECEIVE_TRAINS = 'RECEIVE_TRAINS';
 export const RECEIVE_TRAIN_ERRORS = 'RECEIVE_TRAIN_ERRORS';
 
@@ -12,10 +12,10 @@ const fetchTrainsAPI = (trainGroup) => (
     })
 );
 
-const receiveTrains = (trainGroup, payload) => {
+const receiveTrains = (payload) => {
     return ({
         type: RECEIVE_TRAINS,
-        [trainGroup]: payload.entity
+        trains: normalizeTrainData(payload.entity)
     });
 };
 
@@ -28,7 +28,7 @@ const receiveErrors = (errors) => {
 
 export const fetchTrains = (trainGroup) => (
     (dispatch) => (fetchTrainsAPI(trainGroup).then(
-        (payload) => (dispatch(receiveTrains(trainGroup, payload))),
+        (payload) => (dispatch(receiveTrains(payload))),
         (errors) => (dispatch(receiveErrors(errors)))
     ))
 );
