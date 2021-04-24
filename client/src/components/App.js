@@ -5,22 +5,10 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-
-    this.getFeed = this.getFeed.bind(this);
   }
 
   componentDidMount() {
-    this.getFeed();
-  }
-
-  getFeed = () => {
-    fetch('/api/fetch_gtfs_feed')
-      .then(res => {
-        console.log(res.json());
-      })
-      .then(data => {
-        console.log(data);
-      });
+    this.props.fetchTrains('ABC');
   }
 
   render() {
