@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 const endpoints = require('./mta-datamine-endpoints.json');
 const GtfsRealtimeBindings = require('gtfs-realtime-bindings');
 const https = require('https');
@@ -9,6 +10,8 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 app.use(express.json());
+
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.get('/api/fetch_gtfs_feed/:trainGroup', (req, res) => {
     const trainGroup = req.params.trainGroup;
@@ -34,6 +37,10 @@ app.get('/api/fetch_gtfs_feed/:trainGroup', (req, res) => {
             res.statusCode = 403;
             res.json(err);
         });
+});
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/client/build/index.html'));
 });
 
 const port = process.env.PORT || 5000;
