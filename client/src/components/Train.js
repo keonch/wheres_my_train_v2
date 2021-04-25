@@ -14,6 +14,7 @@ class Train extends Component {
         return (
             <Marker
                 position={this.state.position}
+                icon={this.props.icon}
             ></Marker>
         )
     }
