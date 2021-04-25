@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../assets/stylesheets/App.css';
-import Map from './Map';
+import MapWrapper from './MapContainer';
 
 class App extends Component {
 	constructor(props) {
@@ -14,7 +14,7 @@ class App extends Component {
 	render() {
 		return (
 			<div className="App" >
-				<Map />
+				<MapWrapper />
 			</div>
 		);
 	}
