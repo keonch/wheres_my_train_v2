@@ -1,55 +1,32 @@
 import React, { Component } from 'react';
-import { GoogleMap, withScriptjs, withGoogleMap, Polyline, Marker } from 'react-google-maps';
-import icon from '../assets/images/NYCS-bull-trans-Q.svg';
+import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
 
-function GMap() {
-    return (
-        <GoogleMap defaultZoom={10} defaultCenter={{ lat: 20.291, lng: 153.027 }}>
-            <Marker position={{ lat: 20.291, lng: 153.027 }} />
-            <Polyline
-                path={[
-                    { lat: 22.291, lng: 153.027 },
-                    { lat: 18.291, lng: 153.027 },
-                ]}
-                options={{
-                    geodesic: true,
-                    strokeColor: "#FF0000",
-                    strokeOpacity: 1.0,
-                    strokeWeight: 2,
-                    icons: [{ icon, offset: '100%' }]
-                }}
-            ></Polyline>
-        </GoogleMap>
-    )
+const Wrapper = withScriptjs(withGoogleMap((props) =>
+    <GoogleMap
+        defaultZoom={12}
+        defaultCenter={{ lat: 40.739221291569855, lng: -73.98251203083879 }}
+    >
+        {props.isMarkerShown && <Marker position={{ lat: -34.397, lng: 150.644 }} />}
+    </GoogleMap>
+))
+
+class Map extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+
+    render() {
+        return (
+            <Wrapper
+                isMarkerShown
+                googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
+                loadingElement={< div style={{ height: `100vh` }} />}
+                containerElement={< div style={{ height: `100vh` }} />}
+                mapElement={< div style={{ height: `100vh` }} />}
+            />
+        )
+    }
 }
 
-const ABC = withScriptjs(withGoogleMap(GMap));
-
-export default function Map() {
-    console.log(process.env);
-    return (
-        <div>
-            <ABC
-                googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places`}
-                loadingElement={<div style={{ height: '100vh' }}></div>}
-                containerElement={<div style={{ height: '100vh' }}></div>}
-                mapElement={<div style={{ height: '100vh' }}></div>}
-            >
-                <Marker position={{ lat: 20.291, lng: 153.027 }} />
-                <Polyline
-                    path={[
-                        { lat: 22.291, lng: 153.027 },
-                        { lat: 18.291, lng: 153.027 },
-                    ]}
-                    options={{
-                        geodesic: true,
-                        strokeColor: "#FF0000",
-                        strokeOpacity: 1.0,
-                        strokeWeight: 2,
-                        icons: [{ icon, offset: '100%' }]
-                    }}
-                ></Polyline>
-            </ABC>
-        </div >
-    )
-}
+export default Map;
