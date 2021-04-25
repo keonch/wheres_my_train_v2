@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../assets/stylesheets/App.css';
-import MapWrapper from './MapContainer';
+import MapWrapper from './MapWrapper';
 
 class App extends Component {
 	constructor(props) {
@@ -9,6 +9,7 @@ class App extends Component {
 	}
 
 	componentDidMount() {
+		this.props.fetchTrains('ABC');
 	}
 
 	render() {

@@ -1,7 +1,13 @@
 import { findNextStopIndex_Linear } from './algos';
+import { TRAIN_ROUTES } from './constants';
 
 export const normalizeTrainData = (payload) => {
-    const result = {};
+    const result = {
+        trainsById: {},
+        trainsByRoute: {}
+    };
+
+    TRAIN_ROUTES.forEach(trainRoute => result.trainsByRoute[trainRoute] = []);
 
     // runtime epoch timestamp
     const now = Date.now() / 1000 | 0;
@@ -50,10 +56,9 @@ const setNextStops = (trainObj, trip, currentTime) => {
 };
 
 const addTrainToResult = (result, train) => {
+    const trainId = train.id;
+    result.trainsById[trainId] = train;
+
     const route = train.route;
-    if (route in result) {
-        result[route][train.id] = train;
-    } else {
-        result[route] = { [train.id]: train }
-    }
+    (route in result.trainsByRoute) && result.trainsByRoute[route].push(trainId);
 };
