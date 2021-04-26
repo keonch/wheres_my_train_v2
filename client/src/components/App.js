@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../assets/stylesheets/App.css';
-import MapWrapper from './MapWrapper';
+// import Map from '../containers/MapContainer';
+import Map from './MapWrapper'; // Test
 
 class App extends Component {
 	constructor(props) {
@@ -15,7 +16,7 @@ class App extends Component {
 	render() {
 		return (
 			<div className="App" >
-				<MapWrapper />
+				<Map />
 			</div>
 		);
 	}

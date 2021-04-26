@@ -1,23 +1,16 @@
-import React, { Component } from 'react';
-import { Marker } from 'react-google-maps';
+import React, { useRef } from 'react';
+import { Marker } from 'react-google-maps'; // Test
+// import { Marker } from '@react-google-maps/api';
 
-class Train extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            position: props.stations && props.stations[0],
-        };
-    }
+const Train = (props) => {
+    const positionRef = useRef(props.stations && props.stations[0]);
 
-    render() {
-        console.log(this.props);
-        return (
-            <Marker
-                position={this.state.position}
-                icon={this.props.icon}
-            ></Marker>
-        )
-    }
+    return (
+        <Marker
+            position={positionRef.current}
+            icon={props.icon}
+        ></Marker>
+    )
 }
 
 export default Train;

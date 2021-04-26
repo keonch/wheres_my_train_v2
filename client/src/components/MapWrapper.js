@@ -3,6 +3,7 @@ import Map from '../containers/MapContainer';
 
 const Wrapper = withScriptjs(withGoogleMap(() => <Map />))
 
+// TEST COMPONENT
 export default function MapWrapper() {
     return (
         <Wrapper
