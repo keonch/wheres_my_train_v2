@@ -5,7 +5,7 @@ export const getVisibilityFilter = state => state.visibilityFilter;
 
 export const getTrains = state => state.trains;
 
-export const getTrain = (state, trainId) => state.trains.trainsById[trainId] || {};
+export const getTrain = (state, trainId) => state.trains.trainsById && state.trains.trainsById[trainId];
 
 export const getVisibleTrains = createSelector(
     [getVisibilityFilter, getTrains],
@@ -20,6 +20,7 @@ export const getVisibleTrains = createSelector(
 export const getTimeIntervals = createSelector(
     [getTrain],
     (train) => {
+        if (!train) return;
         const timeIntervals = [];
         for (let i = 1; i < train.trip.length; i++) {
             const toStop = train.trip[i];
@@ -35,6 +36,7 @@ export const getTimeIntervals = createSelector(
 export const getStations = createSelector(
     [getTrain],
     (train) => {
+        if (!train) return;
         const trip = [];
         let stationNotFound = false;
         for (let i = 0; i < train.trip.length; i++) {

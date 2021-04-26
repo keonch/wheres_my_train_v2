@@ -6,7 +6,7 @@ const visibilityFilter = (oldState = new Set(), action) => {
         case 'NEED AN ACTION':
         // return merge(new Set(), oldState, action.visibilityFilter);
         default:
-            return new Set(['A', 'C', 'E', 'H', 'B']);
+            return new Set(['H']);
         // return oldState;
     }
 };

@@ -5,7 +5,7 @@ import ICONS_BY_ROUTE from '../utils/icons';
 
 const msp = (state, ownProps) => {
     const train = getTrain(state, ownProps.id);
-    const icon = ICONS_BY_ROUTE[train.route];
+    const icon = train && ICONS_BY_ROUTE[train.route];
     return {
         train,
         icon,

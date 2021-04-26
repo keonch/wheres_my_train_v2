@@ -1,16 +1,14 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState, forwardRef } from 'react';
 import { Marker } from 'react-google-maps'; // Test
 // import { Marker } from '@react-google-maps/api';
 
-const Train = (props) => {
-    const positionRef = useRef(props.stations && props.stations[0]);
-
+const Train = props => {
     return (
         <Marker
-            position={positionRef.current}
+            position={props.position}
             icon={props.icon}
         ></Marker>
     )
-}
+};
 
 export default Train;
