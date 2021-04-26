@@ -7,11 +7,9 @@ import { Provider } from 'react-redux';
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
-    <React.StrictMode>
-      <Provider store={configureStore()}>
-        <App />
-      </Provider>
-    </React.StrictMode>,
+    <Provider store={configureStore()}>
+      <App />
+    </Provider>,
     document.getElementById('root')
   );
 });
