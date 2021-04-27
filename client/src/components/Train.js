@@ -1,12 +1,10 @@
-import React, { useEffect, useRef, useState, forwardRef } from 'react';
-import { Marker } from 'react-google-maps'; // Test
-// import { Marker } from '@react-google-maps/api';
+import React from 'react';
+import { Marker } from '@react-google-maps/api';
 
-const Train = props => {
+function Train(props) {
     return (
         <Marker
             position={props.position}
-            icon={props.icon}
         ></Marker>
     )
 };

@@ -32,6 +32,7 @@ const ICONS_BY_ROUTE = {
     'D': D,
     'E': E,
     'F': F,
+    'FX': F,
     'FS': FS,
     'G': G,
     'GS': GS,
@@ -42,6 +43,7 @@ const ICONS_BY_ROUTE = {
     'N': N,
     'Q': Q,
     'R': R,
+    'S': FS,
     'SI': SI,
     'W': W,
     'Z': Z,
@@ -50,8 +52,11 @@ const ICONS_BY_ROUTE = {
     '3': THREE,
     '4': FOUR,
     '5': FIVE,
+    '5X': FIVE,
     '6': SIX,
-    '7': SEVEN
+    '6X': SIX,
+    '7': SEVEN,
+    '7X': SEVEN
 };
 
 export default ICONS_BY_ROUTE;

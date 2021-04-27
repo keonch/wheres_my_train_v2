@@ -5,7 +5,7 @@ import { getVisibleTrains } from '../reducers/selectors';
 const msp = (state, ownProps) => {
     return {
         trainIds: getVisibleTrains(state),
-        trains: state.trains
+        trainsById: state.trains.trainsById
     };
 };
 

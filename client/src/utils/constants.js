@@ -10,4 +10,7 @@ export const TRAIN_GROUPS = {
     NUMBERS: '123456'
 };
 
-export const TRAIN_ROUTES = new Set(['A', 'C', 'E', 'B', 'D', 'F', 'M', 'J', 'Z', 'N', 'Q', 'R', 'W', 'G', 'L', 'SI', '7', '1', '2', '3', '4', '5', '6', 'H', 'FS']);
+export const NEW_YORK_CITY_LATLNG = {
+    lat: 40.739221291569855,
+    lng: -73.98251203083879
+};

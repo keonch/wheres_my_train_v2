@@ -1,25 +1,19 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import '../assets/stylesheets/App.css';
-// import Map from '../containers/MapContainer';
-import Map from './MapWrapper'; // Test
+import Map from '../containers/MapContainer';
 
-class App extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {};
-	}
+function App(props) {
+	const fetchTrains = props.fetchTrains;
 
-	componentDidMount() {
-		this.props.fetchTrains('ABC');
-	}
+	useEffect(() => {
+		fetchTrains('ABC');
+	}, [fetchTrains]);
 
-	render() {
-		return (
-			<div className="App" >
-				<Map />
-			</div>
-		);
-	}
+	return (
+		<div className="App" >
+			<Map />
+		</div>
+	);
 }
 
 export default App;
