@@ -1,115 +1,118 @@
-import STATIONS from '../assets/data/STATIONS.json';
+import STATIONS from '../assets/data/STATIONS_STATIC.json';
+import ROUTES_BY_KEYS from '../assets/data/ROUTES_BY_KEYS.json';
 import ROUTES from '../assets/data/ROUTES.json';
 
 export function normalizeTrainData(payload) {
-    const result = {
-        trainsById: {},
-        trainsByRoute: {}
-    };
-
+    const result = { trainsById: {}, trainsByRoute: {} };
     Object.keys(ROUTES).forEach(trainRoute => result.trainsByRoute[trainRoute] = []);
-
-    // runtime epoch timestamp ms
-    const now = Date.now();
-
-    // select trains with tripUpdate elements within payload
-    payload.forEach((entity, i) => {
-        if (!entity.tripUpdate) {
-            return;
-        }
-
-        const tripUpdate = entity.tripUpdate;
-
-        // select trains with valid stopTimeUpdate available
-        if (tripUpdate.stopTimeUpdate && isBeforeDestination(tripUpdate.stopTimeUpdate, now)) {
-            console.log('------');
-            const train = {
-                id: tripUpdate.trip.tripId,
-                route: tripUpdate.trip.routeId,
-                direction: tripUpdate.trip.tripId[tripUpdate.trip.tripId.length - 1],
-                isAtFirstStop: false,
-                stops: [],
-                latLngs: [],
-                durations: []
-            }
-            setIterators(train, tripUpdate.stopTimeUpdate, now)
-            console.log({ train });
-            addTrainToResult(result, train);
-        }
-    });
-
+    transformData(filterPayload(payload), result);
     return result;
 };
 
-// Checks if train has not yet reached its final destination
-function isBeforeDestination(trip, currentTime) {
-    const finalDestination = trip[trip.length - 1];
-    const timeObj = finalDestination.arrival || finalDestination.departure;
-    const time = parseInt(timeObj.time, 10) * 1000;
-    return currentTime < time;
+function filterPayload(payload) {
+    const now = Date.now();
+    return payload.filter(entity => {
+        const tripUpdate = entity.tripUpdate;
+        if (tripUpdate && tripUpdate.stopTimeUpdate) {
+            const stopTimeUpdate = tripUpdate.stopTimeUpdate;
+            const finalDestination = stopTimeUpdate[stopTimeUpdate.length - 1];
+            const timeObj = finalDestination.arrival || finalDestination.departure;
+            const time = parseInt(timeObj.time, 10) * 1000;
+            return now < time;
+        }
+        return false;
+    });
 };
 
-// returns array of Stops starting before its next stop
-function setIterators(trainObj, trips, currentTime) {
-    let prevTime = currentTime;
-    let isFirstDestination = true;
+function transformData(filteredPayload, result) {
+    filteredPayload.forEach(entity => {
+        const tripUpdate = entity.tripUpdate;
+        const train = {
+            id: tripUpdate.trip.tripId,
+            route: tripUpdate.trip.routeId,
+            direction: tripUpdate.trip.tripId[tripUpdate.trip.tripId.length - 1],
+            isAtFirstStop: false,
+            hasOrigin: false,
+            stops: [],
+            latLngs: [],
+            durations: []
+        }
+        setStops(tripUpdate.stopTimeUpdate, train);
+        // setLatLngs();
+        // setDurations();
+        addTrainToResult(result, train);
+    });
+};
 
-    for (let i = 0; i < trips.length; i++) {
+function setStops(trips, train) {
+    const unvisitedStops = filterVisitiedStops(trips, train);
+    const mergedStops = mergeWithStaticRoute(unvisitedStops, train);
+};
+
+function filterVisitiedStops(trips, train) {
+    const now = Date.now();
+    let i = 0
+    while (i < trips.length) {
         const trip = trips[i];
         const timeObj = trip.arrival || trip.departure;
         const time = parseInt(timeObj.time, 10) * 1000;
-        if (time < currentTime) {
-            continue;
+        if (time > now) {
+            break;
         }
+        i++;
+    }
 
-        if (isFirstDestination) {
-            if (i === 0) {
-                // look for prev stop
-                const prevStation = getPreviousStation(trip.stopId, trainObj.direction, trainObj.route);
-                if (prevStation) {
+    if (i > 0) {
+        train.hasOrigin = true;
+        return trips.slice(i - 1);
+    } else {
+        return trips;
+    }
+}
 
+function mergeWithStaticRoute(trips, train) {
+    const staticRoute = ROUTES[train.route];
+    const staticRoutesByKeys = ROUTES_BY_KEYS[train.route];
+
+    if (!train.hasOrigin) {
+        const firstStopId = trips[0].stopId;
+        const station = STATIONS[firstStopId] || {};
+        const parentStopId = station.type === "1" ? firstStopId : station.parent;
+        if (parentStopId in staticRoutesByKeys) {
+            const stationIndex = staticRoutesByKeys[parentStopId] - 1;
+            if (train.direction === 'S') {
+                if (stationIndex === 0) {
+                    train.isAtFirstStop = true;
                 } else {
-                    trainObj.isAtFirstStop = true
+                    const prevStop = { stopId: staticRoute[stationIndex - 1] };
+                    console.log(trips);
+                    trips = [prevStop].concat(trips);
+                    console.log(trips);
+                    train.hasOrigin = true;
                 }
-
-                isFirstDestination = false;
             } else {
-                const prevTrip = trips[i - 1];
-                const prevStopId = prevTrip.stopId;
-                const prevStation = STATIONS[prevStopId] || {};
-                const prevLatLng = { lat: parseFloat(prevStation.lat, 10), lng: parseFloat(prevStation.lon, 10) };
-                trainObj.stopIds.push(prevStopId);
-                trainObj.latLngs.push(prevLatLng);
-                isFirstDestination = false;
+                if (stationIndex === staticRoute.length - 1) {
+                    train.isAtFirstStop = true;
+                } else {
+                    const prevStop = { stopId: staticRoute[stationIndex + 1] }
+                    console.log(trips);
+                    trips = [prevStop].concat(trips);
+                    console.log(trips);
+                    train.hasOrigin = true;
+                }
             }
         }
+    }
 
-        const stopId = trip.stopId;
-        const station = STATIONS[stopId] || {};
-        const latLng = { lat: parseFloat(station.lat, 10), lng: parseFloat(station.lon, 10) };
-        const duration = time - prevTime;
-        trainObj.stopIds.push(stopId);
-        trainObj.latLngs.push(latLng);
-        trainObj.durations.push(duration);
-        prevTime = time;
+    // TRIPS NOW HAVE STARTING POINTS
+    // MERGE THEM
+    let tripsIdx = 0;
+    let staticIdx = 0;
+    while (tripsIdx < trips.length && staticIdx < staticRoute.length) {
+
+        tripsIdx++;
     }
 };
-
-function getPreviousStation(stopId, direction, trainRoute) {
-    const station = STATIONS[stopId] || {};
-    const stationId = (station.type === "0") ? station.parent : stopId;
-    const r = ROUTES[trainRoute] || [];
-    const stopIdx = r.indexOf(stationId);
-    let nextStation;
-    if (stopIdx === -1) {
-        return;
-    } else if (direction === "N") {
-        // nextStation = stopIdx - 1 
-    } else {
-        // stopIdx++;
-    }
-    return true;
-}
 
 function addTrainToResult(result, train) {
     const trainId = train.id;
