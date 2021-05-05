@@ -42,7 +42,7 @@ function transformData(filteredPayload, result) {
             latLngs: [],
             durations: []
         }
-        const visitingStops = filterVisitiedStops(tripUpdate.stopTimeUpdate, train);
+        const visitingStops = getUpcomingStops(tripUpdate.stopTimeUpdate, train);
         setStops(visitingStops, train);
         setLatLngs(visitingStops, train);
         setDurations(visitingStops, train);
@@ -50,7 +50,7 @@ function transformData(filteredPayload, result) {
     });
 };
 
-function filterVisitiedStops(trips, train) {
+function getUpcomingStops(trips) {
     let i = 0
     while (i < trips.length) {
         const trip = trips[i];
