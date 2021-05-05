@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
-import stations from '../assets/data/stations.json';
+import STATIONS from '../assets/data/STATIONS_STATIC.json';
 
 export const getVisibilityFilter = state => state.visibilityFilter;
 
@@ -41,7 +41,7 @@ export const getStations = createSelector(
         let stationNotFound = false;
         for (let i = 0; i < train.trip.length; i++) {
             const stop = train.trip[i];
-            const station = stations[stop.stopId];
+            const station = STATIONS[stop.stopId];
             if (station) {
                 trip.push({ lat: parseFloat(station.lat), lng: parseFloat(station.lon) });
             } else {

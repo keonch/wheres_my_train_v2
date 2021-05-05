@@ -6,7 +6,7 @@ function App(props) {
 	const fetchTrains = props.fetchTrains;
 
 	useEffect(() => {
-		fetchTrains('ABC');
+		fetchTrains('BDFM');
 	}, [fetchTrains]);
 
 	return (

@@ -3,14 +3,20 @@ import ROUTES_BY_KEYS from '../assets/data/ROUTES_BY_KEYS.json';
 import ROUTES from '../assets/data/ROUTES.json';
 
 export function normalizeTrainData(payload) {
+    setTimeNow();
     const result = { trainsById: {}, trainsByRoute: {} };
     Object.keys(ROUTES).forEach(trainRoute => result.trainsByRoute[trainRoute] = []);
     transformData(filterPayload(payload), result);
     return result;
 };
 
+let timeNow = Date.now();
+
+function setTimeNow() {
+    timeNow = Date.now();
+}
+
 function filterPayload(payload) {
-    const now = Date.now();
     return payload.filter(entity => {
         const tripUpdate = entity.tripUpdate;
         if (tripUpdate && tripUpdate.stopTimeUpdate) {
@@ -18,7 +24,7 @@ function filterPayload(payload) {
             const finalDestination = stopTimeUpdate[stopTimeUpdate.length - 1];
             const timeObj = finalDestination.arrival || finalDestination.departure;
             const time = parseInt(timeObj.time, 10) * 1000;
-            return now < time;
+            return timeNow < time;
         }
         return false;
     });
@@ -32,87 +38,80 @@ function transformData(filteredPayload, result) {
             route: tripUpdate.trip.routeId,
             direction: tripUpdate.trip.tripId[tripUpdate.trip.tripId.length - 1],
             isAtFirstStop: false,
-            hasOrigin: false,
             stops: [],
             latLngs: [],
             durations: []
         }
-        setStops(tripUpdate.stopTimeUpdate, train);
-        // setLatLngs();
-        // setDurations();
+        const visitingStops = filterVisitiedStops(tripUpdate.stopTimeUpdate, train);
+        setStops(visitingStops, train);
+        setLatLngs(visitingStops, train);
+        setDurations(visitingStops, train);
         addTrainToResult(result, train);
     });
 };
 
-function setStops(trips, train) {
-    const unvisitedStops = filterVisitiedStops(trips, train);
-    const mergedStops = mergeWithStaticRoute(unvisitedStops, train);
-};
-
 function filterVisitiedStops(trips, train) {
-    const now = Date.now();
     let i = 0
     while (i < trips.length) {
         const trip = trips[i];
         const timeObj = trip.arrival || trip.departure;
         const time = parseInt(timeObj.time, 10) * 1000;
-        if (time > now) {
+        if (time > timeNow) {
             break;
         }
         i++;
     }
 
     if (i > 0) {
-        train.hasOrigin = true;
+        trips[i - 1].isOrigin = true;
         return trips.slice(i - 1);
     } else {
-        return trips;
-    }
-}
-
-function mergeWithStaticRoute(trips, train) {
-    const staticRoute = ROUTES[train.route];
-    const staticRoutesByKeys = ROUTES_BY_KEYS[train.route];
-
-    if (!train.hasOrigin) {
-        const firstStopId = trips[0].stopId;
-        const station = STATIONS[firstStopId] || {};
-        const parentStopId = station.type === "1" ? firstStopId : station.parent;
-        if (parentStopId in staticRoutesByKeys) {
-            const stationIndex = staticRoutesByKeys[parentStopId] - 1;
-            if (train.direction === 'S') {
-                if (stationIndex === 0) {
-                    train.isAtFirstStop = true;
-                } else {
-                    const prevStop = { stopId: staticRoute[stationIndex - 1] };
-                    console.log(trips);
-                    trips = [prevStop].concat(trips);
-                    console.log(trips);
-                    train.hasOrigin = true;
-                }
-            } else {
-                if (stationIndex === staticRoute.length - 1) {
-                    train.isAtFirstStop = true;
-                } else {
-                    const prevStop = { stopId: staticRoute[stationIndex + 1] }
-                    console.log(trips);
-                    trips = [prevStop].concat(trips);
-                    console.log(trips);
-                    train.hasOrigin = true;
-                }
-            }
-        }
-    }
-
-    // TRIPS NOW HAVE STARTING POINTS
-    // MERGE THEM
-    let tripsIdx = 0;
-    let staticIdx = 0;
-    while (tripsIdx < trips.length && staticIdx < staticRoute.length) {
-
-        tripsIdx++;
+        const origin = { ...trips[0] };
+        return [origin, ...trips];
     }
 };
+
+function setStops(trips, train) {
+    trips.forEach(trip => {
+        const stationId = getParentStopId(trip.stopId);
+        if (stationId) {
+            train.stops.push(stationId);
+        }
+    });
+};
+
+function getParentStopId(stopId) {
+    const station = STATIONS[stopId];
+    if (!station) {
+        console.log(`UNDEFINED STATION ID: ${stopId}`);
+        return false;
+    }
+    if (station.type === "0") {
+        return station.parent;
+    }
+    return stopId;
+};
+
+function setLatLngs(trips, train) {
+    train.latLngs = trips.map(trip => getLatLng(trip.stopId));
+};
+
+function getLatLng(stopId) {
+    return STATIONS[stopId] && { lat: parseFloat(STATIONS[stopId].lat), lng: parseFloat(STATIONS[stopId].lon) };
+}
+
+function setDurations(trips, train) {
+    for (let i = 1; i < trips.length; i++) {
+        const prevTrip = trips[i - 1];
+        const prevTimeObj = prevTrip.arrival || prevTrip.departure;
+        const prevTime = i === 1 ? timeNow : parseInt(prevTimeObj.time, 10) * 1000;
+        const trip = trips[i];
+        const timeObj = trip.arrival || trip.departure;
+        const time = parseInt(timeObj.time, 10) * 1000;
+        const duration = time - prevTime;
+        train.durations.push(duration);
+    }
+}
 
 function addTrainToResult(result, train) {
     const trainId = train.id;
@@ -121,4 +120,3 @@ function addTrainToResult(result, train) {
     const route = train.route;
     (route in result.trainsByRoute) && result.trainsByRoute[route].push(trainId);
 };
-
