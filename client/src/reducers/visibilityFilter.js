@@ -5,7 +5,7 @@ const visibilityFilter = (oldState = new Set(), action) => {
             // return merge(new Set(), oldState, action.visibilityFilter);
             break;
         default:
-            return new Set(['D', 'B', 'F', 'M']);
+            return new Set([]);
         // return oldState;
     }
 };

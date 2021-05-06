@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import { NEW_YORK_CITY_LATLNG } from '../utils/constants';
 import Train from '../containers/TrainContainer';
+import MAP_STYLE from '../assets/data/MAP_STYLE.json'
 
 function Map(props) {
     // ----------------------------------------------------------
@@ -9,7 +10,7 @@ function Map(props) {
     // ----------------------------------------------------------
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
-        googleMapsApiKey: ""
+        googleMapsApiKey: "",
     })
 
     const [map, setMap] = useState(null)
@@ -31,9 +32,14 @@ function Map(props) {
         <GoogleMap
             mapContainerStyle={{ width: '100vw', height: '100vh' }}
             center={{ ...NEW_YORK_CITY_LATLNG }}
-            zoom={14}
             onLoad={onLoad}
             onUnmount={onUnmount}
+            options={{
+                styles: MAP_STYLE,
+                disableDefaultUI: true,
+                zoomControl: true,
+                zoom: 12
+            }}
         >
             {props.trainIds.map(trainId => <Train key={trainId} trainId={trainId} />)}
         </GoogleMap>

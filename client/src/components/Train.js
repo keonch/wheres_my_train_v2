@@ -22,10 +22,8 @@ function Train(props) {
     };
 
     const updateLine = (timestamp) => {
-        // time elapsed since the last latlng
         let elapsedTime = timestamp - startTimeStamp.current;
 
-        // not enough time to update the line
         if (elapsedTime <= currentDuration.current) {
             return elapsedTime;
         }
@@ -34,14 +32,11 @@ function Train(props) {
         let lineDuration = currentDuration.current;
 
         while (elapsedTime > lineDuration) {
-            // substract time of the current line
             elapsedTime -= lineDuration;
             lineIndex++;
 
-            // test if we have reached the end of the polyline
+            // end
             if (lineIndex >= props.train.latLngs.length - 1) {
-                // place the marker at the end, else it would be at
-                // the last position
                 setPosition(props.train.latLngs[props.train.latLngs.length - 1]);
                 setTimeout(hideTrain, 10000);
                 return null;
@@ -56,11 +51,9 @@ function Train(props) {
     };
 
     const animate = (timestamp) => {
-        // find the next line and compute the new elapsedTime
-        let elapsedTime = updateLine(timestamp);
+        const elapsedTime = updateLine(timestamp);
         if (elapsedTime != null) {
-            // compute the position
-            let p = interpolatePosition(
+            const p = interpolatePosition(
                 currentLine.current[0],
                 currentLine.current[1],
                 currentDuration.current,
