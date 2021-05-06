@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
 import Train from '../components/Train';
 import { getTrain } from '../reducers/selectors';
-import ICONS from '../assets/data/ICONS';
+import { ICONS_BY_ROUTE } from '../assets/data/ICONS';
 
 const msp = (state, ownProps) => {
     const train = getTrain(state.trains.trainsById, ownProps.trainId)
     return {
         train: train,
-        icon: ICONS[train.route]
+        icon: ICONS_BY_ROUTE[train.route]
     };
 };
 

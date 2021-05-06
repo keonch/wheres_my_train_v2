@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import trains from './trains';
-import visibilityFilter from './visibilityFilter';
+import ui from './ui';
 
 const rootReducer = combineReducers({
     trains,
-    visibilityFilter
+    ui
 });
 
 export default rootReducer;

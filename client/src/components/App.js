@@ -1,16 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import '../assets/stylesheets/App.css';
+import Controls from '../containers/ControlsContainer';
 import Map from '../containers/MapContainer';
 
 function App(props) {
-	const fetchTrains = props.fetchTrains;
-
-	useEffect(() => {
-		fetchTrains('BDFM');
-	}, [fetchTrains]);
-
 	return (
 		<div className="App" >
+			<Controls />
 			<Map />
 		</div>
 	);

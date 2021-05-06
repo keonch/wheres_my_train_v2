@@ -24,15 +24,19 @@ import FOUR from '../images/4.svg';
 import FIVE from '../images/5.svg';
 import SIX from '../images/6.svg';
 import SEVEN from '../images/7.svg';
+import SEVENX from '../images/7X.png';
+import FX from '../images/FX.png';
+import FIVEX from '../images/5X.png';
+import SIXX from '../images/6X.png';
 
-const ICONS_BY_ROUTE = {
+export const ICONS_BY_ROUTE = {
     'A': A,
     'B': B,
     'C': C,
     'D': D,
     'E': E,
     'F': F,
-    'FX': F,
+    'FX': FX,
     'FS': FS,
     'G': G,
     'GS': GS,
@@ -52,11 +56,9 @@ const ICONS_BY_ROUTE = {
     '3': THREE,
     '4': FOUR,
     '5': FIVE,
-    '5X': FIVE,
+    '5X': FIVEX,
     '6': SIX,
-    '6X': SIX,
+    '6X': SIXX,
     '7': SEVEN,
-    '7X': SEVEN
+    '7X': SEVENX
 };
-
-export default ICONS_BY_ROUTE;

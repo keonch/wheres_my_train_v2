@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { fetchTrains } from '../actions/train_actions';
 import App from '../components/App';
 
 const msp = (state, ownProps) => {
@@ -10,7 +9,6 @@ const msp = (state, ownProps) => {
 
 const mdp = (dispatch) => {
     return {
-        fetchTrains: (trainGroup) => dispatch(fetchTrains(trainGroup))
     };
 };
 

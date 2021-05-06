@@ -1,0 +1,39 @@
+.Controls {
+    top: 0;
+    z-index: 10;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    text-align: center;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    position: absolute;
+    background-color: white;
+}
+
+.Controls > h1 {
+    font-size: 1.25rem;
+}
+
+.Controls > * img {
+    margin: .25rem;
+    width: 2rem;
+    opacity: .6;
+}
+
+.train-buttons {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.train-button.active{
+    opacity: 1;
+}
+
+.train-button:hover {
+    opacity: 1;
+    cursor: pointer;
+}
