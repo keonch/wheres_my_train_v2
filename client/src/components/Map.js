@@ -27,19 +27,6 @@ function Map(props) {
     // ----------------------------------------------------------
     // ----------------------------------------------------------
 
-    // const [positionsByTrainId, setPositions] = useState({});
-    // const previousTimeRef = useRef(null);
-    // const animationRef = useRef(null);
-
-    // const updatePositions = timeRef => {
-    //     setPositions(updatedPositions);
-    //     previousTimeRef.current = timeRef;
-    //     animationRef.current = requestAnimationFrame(updatePositions);
-    // }
-
-    // useEffect(() => {
-    //     animationRef.current = requestAnimationFrame(updatePositions);
-    // }, [props.trainIds]);
     return isLoaded ? (
         <GoogleMap
             mapContainerStyle={{ width: '100vw', height: '100vh' }}

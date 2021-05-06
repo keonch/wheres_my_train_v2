@@ -1,5 +1,4 @@
 import STATIONS from '../assets/data/STATIONS_STATIC.json';
-import ROUTES_BY_KEYS from '../assets/data/ROUTES_BY_KEYS.json';
 import ROUTES from '../assets/data/ROUTES.json';
 
 export function normalizeTrainData(payload) {
