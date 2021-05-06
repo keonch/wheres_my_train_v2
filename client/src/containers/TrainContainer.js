@@ -1,16 +1,10 @@
 import { connect } from 'react-redux';
 import Train from '../components/Train';
-import { getTimeIntervals, getStations } from '../reducers/selectors';
-import ICONS_BY_ROUTE from '../utils/icons';
+import { getTrain } from '../reducers/selectors';
 
 const msp = (state, ownProps) => {
-    // const train = getTrain(state, ownProps.id);
-    // const icon = train && ICONS_BY_ROUTE[train.route];
     return {
-        // train,
-        // icon,
-        // timeIntervals: getTimeIntervals(state, ownProps.id),
-        // stations: getStations(state, ownProps.id)
+        train: getTrain(state.trains.trainsById, ownProps.trainId)
     };
 };
 

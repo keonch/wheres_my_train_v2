@@ -37,7 +37,6 @@ function transformData(filteredPayload, result) {
             id: tripUpdate.trip.tripId,
             route: tripUpdate.trip.routeId,
             direction: tripUpdate.trip.tripId[tripUpdate.trip.tripId.length - 1],
-            isAtFirstStop: false,
             stops: [],
             latLngs: [],
             durations: []
