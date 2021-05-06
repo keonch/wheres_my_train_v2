@@ -4,17 +4,21 @@ import { interpolatePosition } from '../utils/train-utils';
 
 function Train(props) {
     const [position, setPosition] = useState(props.train.latLngs[0]);
+    const [isVisible, setVisibility] = useState(true);
     const currentDuration = useRef(0);
     const currentIndex = useRef(0);
     const startTime = useRef(0);
     const startTimeStamp = useRef(0);
-    const animId = useRef(0);
     const currentLine = useRef([]);
 
     const loadLine = (i) => {
         currentIndex.current = i;
         currentDuration.current = props.train.durations[i];
         currentLine.current = props.train.latLngs.slice(i, i + 2);
+    };
+
+    const hideTrain = () => {
+        setVisibility(false);
     };
 
     const updateLine = (timestamp) => {
@@ -39,7 +43,7 @@ function Train(props) {
                 // place the marker at the end, else it would be at
                 // the last position
                 setPosition(props.train.latLngs[props.train.latLngs.length - 1]);
-                cancelAnimationFrame(animId.current);
+                setTimeout(hideTrain, 10000);
                 return null;
             }
             lineDuration = props.train.durations[lineIndex];
@@ -65,12 +69,12 @@ function Train(props) {
             setPosition(p);
         }
 
-        animId.current = requestAnimationFrame(animate);
+        requestAnimationFrame(animate);
     };
 
     useEffect(() => {
         loadLine(0);
-        animId.current = requestAnimationFrame(function (timestamp) {
+        requestAnimationFrame(function (timestamp) {
             startTime.current = Date.now();
             startTimeStamp.current = timestamp;
             animate(timestamp);
@@ -80,6 +84,8 @@ function Train(props) {
     return (
         <Marker
             position={position}
+            visible={isVisible.current}
+            icon={props.icon}
         ></Marker>
     )
 };
