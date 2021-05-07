@@ -20,7 +20,7 @@
 .Controls > * img {
     margin: .25rem;
     width: 2rem;
-    opacity: .6;
+    opacity: .4;
 }
 
 .train-buttons {
@@ -31,6 +31,7 @@
 
 .train-button.active{
     opacity: 1;
+    width: 2rem;
 }
 
 .train-button:hover {

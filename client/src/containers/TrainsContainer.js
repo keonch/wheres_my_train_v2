@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Map from '../components/Map';
+import Trains from '../components/Trains';
 import { getVisibleTrains } from '../reducers/selectors';
 
 const msp = (state, ownProps) => {
@@ -13,4 +13,4 @@ const mdp = (dispatch) => {
     return {};
 };
 
-export default connect(msp, mdp)(Map);
+export default connect(msp, mdp)(Trains);

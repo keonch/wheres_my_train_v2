@@ -66,18 +66,23 @@ function Train(props) {
             requestAnimationFrame(animate);
         };
         loadLine(0);
-        // requestAnimationFrame(function (timestamp) {
-        //     startTime.current = Date.now();
-        //     startTimeStamp.current = timestamp;
-        //     animate(timestamp);
-        // });
+        requestAnimationFrame(function (timestamp) {
+            startTime.current = Date.now();
+            startTimeStamp.current = timestamp;
+            animate(timestamp);
+        });
     }, [props.train]);
 
     return (
         <Marker
             position={position}
             visible={isVisible.current}
-            icon={props.icon}
+            icon={{
+                url: props.icon,
+                scaledSize: new window.google.maps.Size(25, 25),
+                origin: new window.google.maps.Point(0, 0),
+                anchor: new window.google.maps.Point(13, 13),
+            }}
         ></Marker>
     )
 };
