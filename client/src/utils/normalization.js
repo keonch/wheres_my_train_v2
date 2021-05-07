@@ -33,6 +33,11 @@ function getTrainsById(payload) {
             stations: getStations(entity.tripUpdate.stopTimeUpdate)
         };
 
+        if (!ROUTES_BY_KEYS[train.route]) {
+            console.log(`UNDEFINED ROUTE: ${train.route}`);
+            return;
+        }
+
         const isValidTrain = setMarkerParams(train);
         if (isValidTrain) {
             trainsById[train.id] = train;
@@ -84,7 +89,7 @@ function findPreviousStopIdFromRoute(train, currentStop) {
         const direction = train.direction;
         const route = ROUTES[train.route];
         const stopIdx = route.indexOf(currentStop.id);
-        if (direction === 'N') {
+        if (direction === 'S') {
             if (stopIdx > 0) {
                 const prevStopId = route[stopIdx - 1];
                 return prevStopId;

@@ -10,17 +10,15 @@
     flex-flow: column nowrap;
     align-items: center;
     position: absolute;
-    background-color:rgba(61, 61, 61, 0.9);
+    /* background-color: 	#cfeae4; */
+    background-color:rgba(207, 234, 228, 0.9);
+    padding-bottom: 1rem;
 }
 
 .Controls > h1 {
-    font-size: 1.25rem;
-}
-
-.Controls > * img {
-    margin: .25rem;
-    width: 2rem;
-    opacity: .4;
+    font-size: 1.5rem;
+    opacity: 1;
+    color:#292e2d;
 }
 
 .train-buttons {
@@ -29,17 +27,39 @@
     justify-content: center;
 }
 
-.train-button.active{
-    opacity: 1;
-    width: 2rem;
+.train-button {
+    width: 2.25rem;
+    height: 2.25rem;
+    margin: .15rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.train-button:hover {
+.train-button.active{
+    opacity: 1;
+    box-shadow: 0 0 .1rem .1rem #faf8f2;
+    background-color: #faf8f2;
+    border-radius: 50%;
+}
+
+.train-icon {
+    width: 2rem;
+    height: 2rem;
+    opacity: .5;
+    border: none;
+}
+
+.train-button.active > .train-icon{
+    opacity: 1;
+}
+
+.train-icon:hover {
     opacity: 1;
     cursor: pointer;
 }
 
-.slide-down{
+/* .slide-down{
 	animation-name: slide-down;
 	animation-duration: 1s;	
 	animation-timing-function: ease-out;	
@@ -59,4 +79,4 @@
 @keyframes slide-up {
     from {transform: translate(0, 0)}
     to {transform: translate(0, -100%)}
-}
+} */

@@ -1,5 +1,6 @@
 import { normalizeTrainData } from '../utils/normalization';
 export const RECEIVE_TRAINS = 'RECEIVE_TRAINS';
+export const REMOVE_TRAIN = 'REMOVE_TRAIN';
 export const RECEIVE_TRAIN_ERRORS = 'RECEIVE_TRAIN_ERRORS';
 
 const fetchTrainsAPI = (trainGroup) => (
@@ -35,3 +36,10 @@ export const fetchTrains = (trainGroup) => (
         (errors) => (dispatch(receiveErrors(errors)))
     ))
 );
+
+export const removeTrain = (train) => {
+    return ({
+        type: REMOVE_TRAIN,
+        train
+    });
+};

@@ -4,7 +4,6 @@ import { interpolatePosition } from '../utils/train';
 
 function TrainMarker(props) {
     const [position, setPosition] = useState(props.train.latLngs[0]);
-    const [isVisible, setVisibility] = useState(true);
     const currentDuration = useRef(0);
     const currentIndex = useRef(0);
     const startTime = useRef(0);
@@ -18,8 +17,8 @@ function TrainMarker(props) {
             currentLine.current = props.train.latLngs.slice(i, i + 2);
         };
 
-        const hideTrain = () => {
-            setVisibility(false);
+        const removeSelf = () => {
+            props.removeTrain(props.train);
         };
 
         const updateLine = (timestamp) => {
@@ -39,7 +38,7 @@ function TrainMarker(props) {
                 // end
                 if (lineIndex >= props.train.latLngs.length - 1) {
                     setPosition(props.train.latLngs[props.train.latLngs.length - 1]);
-                    setTimeout(hideTrain, 10000);
+                    setTimeout(removeSelf, 10000);
                     return null;
                 }
                 lineDuration = props.train.durations[lineIndex];
@@ -61,6 +60,8 @@ function TrainMarker(props) {
                     elapsedTime
                 );
                 setPosition(p);
+            } else {
+                return;
             }
 
             requestAnimationFrame(animate);
@@ -77,7 +78,6 @@ function TrainMarker(props) {
     return (
         <Marker
             position={position}
-            visible={isVisible.current}
             icon={{
                 url: props.icon,
                 scaledSize: new window.google.maps.Size(25, 25),

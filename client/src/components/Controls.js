@@ -34,13 +34,15 @@ function Controls(props) {
             <h1>Where's My Train?</h1>
             <div className="train-buttons">
                 {ICONS_TO_DISPLAY.map(route =>
-                    <img
-                        src={ICONS_BY_ROUTE[route]}
-                        key={route}
-                        alt={route}
-                        className={`train-button ${props.activeRoutes.has(route) ? 'active' : ""}`}
-                        onClick={() => toggleRoute(route)}
-                    />
+                    <div key={route + '_button'} className={`train-button  ${props.activeRoutes.has(route) ? 'active' : ""}`}>
+                        <img
+                            src={ICONS_BY_ROUTE[route]}
+                            key={route + '_icon'}
+                            alt={route}
+                            className={`train-icon`}
+                            onClick={() => toggleRoute(route)}
+                        />
+                    </div>
                 )}
             </div>
         </div>
