@@ -6,7 +6,7 @@ import Trains from '../containers/TrainsContainer';
 function Map(props) {
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
-        googleMapsApiKey: "AIzaSyBbrjYPvl5Ty9IQ8eM05omrNFd1mAuX120",
+        googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_KEY,
     })
 
     if (!isLoaded) return <></>;
