@@ -10,7 +10,7 @@
     flex-flow: column nowrap;
     align-items: center;
     position: absolute;
-    background-color: white;
+    background-color:rgba(61, 61, 61, 0.9);
 }
 
 .Controls > h1 {
@@ -37,4 +37,26 @@
 .train-button:hover {
     opacity: 1;
     cursor: pointer;
+}
+
+.slide-down{
+	animation-name: slide-down;
+	animation-duration: 1s;	
+	animation-timing-function: ease-out;	
+}
+
+.slide-up{
+	animation-name: slide-up;
+	animation-duration: .7s;	
+	animation-timing-function: linear;	
+}
+
+@keyframes slide-down {
+    from {transform: translate(0, -100%)}
+    to {transform: translate(0, 0)}
+}
+
+@keyframes slide-up {
+    from {transform: translate(0, 0)}
+    to {transform: translate(0, -100%)}
 }

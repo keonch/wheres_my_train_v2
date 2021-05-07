@@ -49,6 +49,7 @@ export const ICONS_BY_ROUTE = {
     'R': R,
     'S': FS,
     'SI': SI,
+    'SS': SI,
     'W': W,
     'Z': Z,
     '1': ONE,
