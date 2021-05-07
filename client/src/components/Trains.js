@@ -1,10 +1,10 @@
 import React from 'react';
-import Train from '../containers/TrainContainer';
+import TrainMarker from '../containers/TrainMarkerContainer';
 
 function Trains(props) {
     return (
         <div>
-            {props.trainIds.map(trainId => <Train key={trainId} trainId={trainId} />)}
+            {props.trainIds.map(trainId => <TrainMarker key={trainId} trainId={trainId} />)}
         </div>
     )
 }

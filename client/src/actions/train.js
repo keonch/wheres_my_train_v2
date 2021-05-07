@@ -13,9 +13,11 @@ const fetchTrainsAPI = (trainGroup) => (
 );
 
 const receiveTrains = (payload, trainGroup) => {
+    const trains = normalizeTrainData(payload.entity)
     return ({
         type: RECEIVE_TRAINS,
-        trains: normalizeTrainData(payload.entity),
+        trainsById: trains.trainsById,
+        trainsByRoute: trains.trainsByRoute,
         trainGroup
     });
 };

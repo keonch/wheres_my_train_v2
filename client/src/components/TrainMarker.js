@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Marker } from '@react-google-maps/api';
 import { interpolatePosition } from '../utils/train';
 
-function Train(props) {
+function TrainMarker(props) {
     const [position, setPosition] = useState(props.train.latLngs[0]);
     const [isVisible, setVisibility] = useState(true);
     const currentDuration = useRef(0);
@@ -65,6 +65,7 @@ function Train(props) {
 
             requestAnimationFrame(animate);
         };
+
         loadLine(0);
         requestAnimationFrame(function (timestamp) {
             startTime.current = Date.now();
@@ -87,4 +88,4 @@ function Train(props) {
     )
 };
 
-export default Train;
+export default TrainMarker;

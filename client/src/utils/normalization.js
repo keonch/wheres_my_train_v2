@@ -40,7 +40,7 @@ function getTrainsById(payload) {
 
     });
     return trainsById;
-}
+};
 
 function setMarkerParams(train) {
     const latLngs = [];
@@ -52,9 +52,9 @@ function setMarkerParams(train) {
         }
 
         if (idx === 0) {
-            const prevStation = findPreviousStopFromRoute(train, station);
-            if (prevStation) {
-                latLngs.push(prevStation.latLng);
+            const prevStationId = findPreviousStopIdFromRoute(train, station);
+            if (prevStationId) {
+                latLngs.push(getStationLatLng(prevStationId));
             } else {
                 latLngs.push(station.latLng);
             }
@@ -63,7 +63,7 @@ function setMarkerParams(train) {
             return;
         }
 
-        const prevStation = stations[idx - 1];
+        const prevStation = train.stations[idx - 1];
         if (latLngs.length === 0) {
             latLngs.push(prevStation.latLng);
             latLngs.push(station.latLng);
@@ -76,11 +76,10 @@ function setMarkerParams(train) {
 
     train.latLngs = latLngs;
     train.durations = durations;
-
-    return latLngs.length > 0;
+    return latLngs.length > 1;
 };
 
-function findPreviousStopFromRoute(train, currentStop) {
+function findPreviousStopIdFromRoute(train, currentStop) {
     if (currentStop.id in ROUTES_BY_KEYS[train.route]) {
         const direction = train.direction;
         const route = ROUTES[train.route];
@@ -88,20 +87,20 @@ function findPreviousStopFromRoute(train, currentStop) {
         if (direction === 'N') {
             if (stopIdx > 0) {
                 const prevStopId = route[stopIdx - 1];
-                return STATIONS[prevStopId];
+                return prevStopId;
             }
         } else {
             if (stopIdx < route.length - 1) {
                 const prevStopId = route[stopIdx + 1];
-                return STATIONS[prevStopId];
+                return prevStopId;
             }
         }
     }
     return false;
-}
+};
 
 function getStations(trip) {
-    const stations = {};
+    const stations = [];
     for (let i = 0; i < trip.length; i++) {
         const stop = trip[i];
         const stationId = getParentStopId(stop.stopId);
@@ -116,6 +115,13 @@ function getStations(trip) {
         }
     }
     return stations;
+};
+
+function getStationLatLng(stationId) {
+    return {
+        lat: parseFloat(STATIONS[stationId].lat),
+        lng: parseFloat(STATIONS[stationId].lon)
+    };
 }
 
 function filterPayload(payload) {
