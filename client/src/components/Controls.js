@@ -1,7 +1,8 @@
 import React from 'react';
 import '../assets/stylesheets/Controls.css';
 import { ICONS_BY_ROUTE } from '../assets/data/ICONS';
-import { ICONS_TO_DISPLAY, TRAIN_GROUPS_BY_ROUTE } from '../utils/constants';
+import { ICONS_TO_DISPLAY } from '../assets/data/CONSTANTS';
+import ENDPOINTS_BY_ROUTE from '../assets/data/ENDPOINTS_BY_ROUTE.json';
 
 function Controls(props) {
     function isActive(route) {
@@ -12,7 +13,7 @@ function Controls(props) {
         if (isActive(route)) {
             props.deactivateRoute(route);
         } else {
-            const trainGroup = TRAIN_GROUPS_BY_ROUTE[route];
+            const trainGroup = ENDPOINTS_BY_ROUTE[route];
             props.activateRoute(route);
             if (trainGroup in props.fetchedTimeStamps) {
                 const dt = Date.now() - props.fetchedTimeStamps[trainGroup];

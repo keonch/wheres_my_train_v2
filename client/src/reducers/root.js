@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
-import trains from './trains';
+import trainsById from './trainsById';
+import trainsByRoute from './trainsByRoute';
 import ui from './ui';
 
 const rootReducer = combineReducers({
-    trains,
+    trainsById,
+    trainsByRoute,
     ui
 });
 

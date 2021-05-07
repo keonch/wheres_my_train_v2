@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import Controls from '../components/Controls';
-import { fetchTrains } from '../actions/train_actions';
-import { activateRoute, deactivateRoute } from '../actions/ui_actions';
+import { fetchTrains } from '../actions/train';
+import { activateRoute, deactivateRoute } from '../actions/ui';
 
 const msp = ({ ui }, ownProps) => {
     return {

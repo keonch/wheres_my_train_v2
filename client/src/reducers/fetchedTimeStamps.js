@@ -1,4 +1,4 @@
-import { RECEIVE_TRAINS } from '../actions/train_actions';
+import { RECEIVE_TRAINS } from '../actions/train';
 import merge from 'lodash/merge';
 
 const activeRoutes = (oldState = new Set(), action) => {

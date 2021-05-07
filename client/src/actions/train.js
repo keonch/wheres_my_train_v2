@@ -1,4 +1,4 @@
-import { normalizeTrainData } from '../utils/normalize_data';
+import { normalizeTrainData } from '../utils/normalization';
 export const RECEIVE_TRAINS = 'RECEIVE_TRAINS';
 export const RECEIVE_TRAIN_ERRORS = 'RECEIVE_TRAIN_ERRORS';
 

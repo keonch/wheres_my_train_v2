@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Marker } from '@react-google-maps/api';
-import { interpolatePosition } from '../utils/train_utils';
+import { interpolatePosition } from '../utils/train';
 
 function Train(props) {
     const [position, setPosition] = useState(props.train.latLngs[0]);
@@ -71,7 +71,7 @@ function Train(props) {
             startTimeStamp.current = timestamp;
             animate(timestamp);
         });
-    }, [props.train]);
+    }, []);
 
     return (
         <Marker

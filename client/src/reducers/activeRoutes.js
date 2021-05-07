@@ -1,4 +1,4 @@
-import { RECEIVE_ACTIVE_ROUTE, RECEIVE_DEACTIVE_ROUTE } from '../actions/ui_actions';
+import { RECEIVE_ACTIVE_ROUTE, RECEIVE_DEACTIVE_ROUTE } from '../actions/ui';
 
 const activeRoutes = (oldState = new Set(), action) => {
     Object.freeze(oldState);

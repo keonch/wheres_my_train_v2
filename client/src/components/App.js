@@ -1,7 +1,7 @@
 import React from 'react';
 import '../assets/stylesheets/App.css';
 import Controls from '../containers/ControlsContainer';
-import Map from '../components/Map';
+import Map from './Map';
 
 function App(props) {
 	return (

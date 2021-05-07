@@ -1,9 +1,0 @@
-export const BLUE = 'BLUE';
-export const ORANGE = 'ORANGE';
-export const YELLOW = 'YELLOW';
-export const NUMBERS = 'NUMBERS';
-export const SEVEN = 'SEVEN';
-export const BROWN = 'BROWN';
-export const L = 'L';
-export const G = 'G';
-export const SI = 'SI';

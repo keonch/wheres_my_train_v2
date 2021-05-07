@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './assets/stylesheets/index.css';
 import App from './components/App';
-import configureStore from './store/store';
+import configureStore from './store';
 import { Provider } from 'react-redux';
 
 document.addEventListener('DOMContentLoaded', () => {
