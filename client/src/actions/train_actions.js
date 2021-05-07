@@ -1,5 +1,4 @@
 import { normalizeTrainData } from '../utils/normalize_data';
-import { TRAIN_GROUPS_BY_ROUTE } from '../utils/constants';
 export const RECEIVE_TRAINS = 'RECEIVE_TRAINS';
 export const RECEIVE_TRAIN_ERRORS = 'RECEIVE_TRAIN_ERRORS';
 
@@ -13,10 +12,11 @@ const fetchTrainsAPI = (trainGroup) => (
     })
 );
 
-const receiveTrains = (payload) => {
+const receiveTrains = (payload, trainGroup) => {
     return ({
         type: RECEIVE_TRAINS,
-        trains: normalizeTrainData(payload.entity)
+        trains: normalizeTrainData(payload.entity),
+        trainGroup
     });
 };
 
@@ -27,9 +27,9 @@ const receiveErrors = (errors) => {
     });
 };
 
-export const fetchTrainsByRoute = (route) => (
-    (dispatch) => (fetchTrainsAPI(TRAIN_GROUPS_BY_ROUTE[route]).then(
-        (payload) => (dispatch(receiveTrains(payload))),
+export const fetchTrains = (trainGroup) => (
+    (dispatch) => (fetchTrainsAPI(trainGroup).then(
+        (payload) => (dispatch(receiveTrains(payload, trainGroup))),
         (errors) => (dispatch(receiveErrors(errors)))
     ))
 );

@@ -1,7 +1,7 @@
 import React from 'react';
 import '../assets/stylesheets/Controls.css';
 import { ICONS_BY_ROUTE } from '../assets/data/ICONS';
-import { ICONS_TO_DISPLAY } from '../utils/constants';
+import { ICONS_TO_DISPLAY, TRAIN_GROUPS_BY_ROUTE } from '../utils/constants';
 
 function Controls(props) {
     function isActive(route) {
@@ -12,8 +12,16 @@ function Controls(props) {
         if (isActive(route)) {
             props.deactivateRoute(route);
         } else {
-            props.fetchTrain(route);
+            const trainGroup = TRAIN_GROUPS_BY_ROUTE[route];
             props.activateRoute(route);
+            if (trainGroup in props.fetchedTimeStamps) {
+                const dt = Date.now() - props.fetchedTimeStamps[trainGroup];
+                if (dt < 10000) {
+                    console.log(`WAIT ${10 - (dt / 1000)} SECONDS FOR NEW REQUEST`);
+                    return;
+                }
+            }
+            props.fetchTrains(trainGroup);
         }
     }
 
